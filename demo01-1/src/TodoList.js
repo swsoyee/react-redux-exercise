@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import store from './store'
+import { connect } from 'react-redux'
 
 class TodoList extends Component {
-    constructor(props){
-        super(props)
-        this.state = store.getState()
-    }
     
     render() { 
         return ( 
         <div>
             <div>
-                <input value={this.state.inputValue}/>
+                <input value={this.props.inputValue}/>
                 <button>Submit</button>
             </div>
             <ul>
@@ -20,5 +16,11 @@ class TodoList extends Component {
         </div> );
     }
 }
+
+const stateToProps = (state)=>{
+    return {
+        inputValue: state.inputValue
+    }
+}
  
-export default TodoList;
+export default connect(stateToProps, null)(TodoList);
