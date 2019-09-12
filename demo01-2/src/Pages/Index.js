@@ -11,6 +11,7 @@ class Index extends Component {
                 {cid:789, title:'Article-3'}
             ]
          }
+         this.props.history.push("/home/")
     }
     render() { 
         return (
