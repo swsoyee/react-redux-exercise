@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Input, Button, List } from 'antd'
-import 'antd/dist/antd.css'
 import store from './store'
-import {changeInputAction, deleteItemAction, addItemAction} from './store/actionCreators'
+import {getMyListAction, changeInputAction, deleteItemAction, addItemAction} from './store/actionCreators'
+import TodoListUI from './TodoListUI'
 
 class TodoList extends Component {
     constructor(props){
@@ -10,32 +9,28 @@ class TodoList extends Component {
         this.state=store.getState()
         this.changeInputValue=this.changeInputValue.bind(this)
         this.clickButton=this.clickButton.bind(this)
+        this.deleteItem=this.deleteItem.bind(this)
         this.storeChange=this.storeChange.bind(this)
         store.subscribe(this.storeChange)
     }
 
-    render() { 
-        return ( 
-            <div style={{margin:'10px'}}>
-                <div>
-                    <Input 
-                        placeholder={this.state.inputValue}
-                        style={{width:'250px', marginRight:'10px'}}
-                        onChange={this.changeInputValue}
-                        value={this.state.inputValue}
-                    />
-                    <Button type="primary"
-                        onClick={this.clickButton}>Add</Button>
-                </div>
-                <div style={{marginTop:'10px', width:'250px'}}>
-                    <List
-                        bordered
-                        dataSource={this.state.list}
-                        renderItem={(item, index)=>(<List.Item onClick={this.deleteItem.bind(this, index)}>{item}</List.Item>)}
-                    />
-                </div>
-            </div>
-         );
+    render() {
+        return(
+            <TodoListUI 
+                inputValue={this.state.inputValue}
+                changeInputValue={this.changeInputValue}
+                clickButton={this.clickButton}
+                list={this.state.list}
+                deleteItem={this.deleteItem}
+            />
+        )
+    }
+
+    componentDidMount(){
+        const action = getMyListAction()
+        store.dispatch(action)
+        // const action = getTodoList()
+        // store.dispatch(action)
     }
 
     changeInputValue(e){
